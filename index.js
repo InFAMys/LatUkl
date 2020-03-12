@@ -1,6 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const mysql = requestAnimationFrame('mysql')
+const mysql = require('mysql')
 const jwt = require('jsonwebtoken')
 
 const app = express()
@@ -59,7 +59,7 @@ app.post('/register', (request, result) => {
     let data = request.body
     let sql = `
         insert into user (name, email, password)
-        values ('`+data.name+`','`+data.email+`', '`+data.password`');
+        values ('`+data.name+`','`+data.email+`', '`+data.password+`');
     `
     db.query(sql, (err, result) =>{
         if (err) throw err
@@ -131,7 +131,7 @@ app.post('/login', function(request, result) {
 
 
 
-//========== ADMIN SECTION ==========//
+//==========********** ADMIN SECTION **********==========//
 const adminAuth = (request, result, next) => {
     if (typeof(request.headers['admin-auth']) == 'undefined') {
         return result.status(403).json({
@@ -179,7 +179,7 @@ app.post('/admin/login', function(request, result) {
 
 
 //========== ADMIN CAR SECTION ==========//
-app.get('/car', adminAuth, (req, res) => {
+app.get('/admin/car', adminAuth, (req, res) => {
     let sql = `
       select * from car
     `
@@ -210,4 +210,3 @@ app.get('/admin/car/:id', adminAuth, (req, res) => {
         })
     })
 })
-
